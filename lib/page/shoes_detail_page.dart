@@ -22,7 +22,7 @@ class ShoesDetailPage extends StatefulWidget {
 class _ShoesDetailPageState extends State<ShoesDetailPage> {
   final SharedPrefs _prefs = SharedPrefs();
 
-   @override
+  @override
   void initState() {
     super.initState();
     _loadCartData();
@@ -40,7 +40,7 @@ class _ShoesDetailPageState extends State<ShoesDetailPage> {
   _saveCartData() async {
     await _prefs.saveCart(cartItems);
   }
-  
+
   @override
   Widget build(BuildContext context) {
     var media = MediaQuery.of(context).size;
@@ -282,26 +282,34 @@ class _ShoesDetailPageState extends State<ShoesDetailPage> {
                                       ),
                                     ],
                                   ),
-                                  AppEleventButton(
-                                    // onPressed: () async {
-                                    //   cartItems.add(widget.shoe);
-                                    //   await Navigator.push(
-                                    //       context,
-                                    //       MaterialPageRoute(
-                                    //         builder: (context) =>
-                                    //             const MyCartPage(),
-                                    //       ));
-                                    // },
-                                     onPressed: () async {
+                                  AppEleventButton( 
+                                    onPressed: () async {
+                                      bool isDuplicate = cartItems.any(
+                                          (item) => item.id == widget.shoe.id);
+
                                       setState(() {
-                                        cartItems.add(widget.shoe);
+                                        if (isDuplicate) {
+                                          // Tìm sản phẩm trùng và tăng số lượng
+                                          cartItems = cartItems.map((item) {
+                                            if (item.id == widget.shoe.id) {
+                                              item.quantity =
+                                                  (item.quantity ?? 1) + 1;
+                                            }
+                                            return item;
+                                          }).toList();
+                                        } else {
+                                          // Thêm sản phẩm mới vào giỏ hàng
+                                          cartItems.add(widget.shoe);
+                                        }
                                       });
+
                                       await _saveCartData();
                                       await Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => const MyCartPage(),
-                                        ));
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const MyCartPage(),
+                                          ));
                                     },
                                     text: "Add to Cart",
                                     colorBorder: AppColor.blue,

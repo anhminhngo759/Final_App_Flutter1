@@ -2,6 +2,7 @@ import 'package:final_app_flutter/components/app_bar.dart';
 import 'package:final_app_flutter/page/home_page.dart';
 import 'package:flutter/material.dart';
 import '../model/shoes_model.dart';
+import 'main_tab_page.dart';
 import 'shoes_detail_page.dart';
 
 class SearchResultPage extends StatelessWidget {
@@ -23,7 +24,7 @@ class SearchResultPage extends StatelessWidget {
         showAvatar: false,
         leftPressed: () {
           Route route = PageRouteBuilder(
-            pageBuilder: (context, animation, secondaryAnimation) => HomePage(),
+            pageBuilder: (context, animation, secondaryAnimation) => MainTabPage(),
             transitionsBuilder:
                 (context, animation, secondaryAnimation, child) {
               return child;
