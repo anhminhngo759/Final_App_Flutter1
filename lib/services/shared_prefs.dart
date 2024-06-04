@@ -56,10 +56,13 @@ class SharedPrefs {
   //shared prefferences cartIterm
   Future<List<ShoesModel>?> getCart() async {
     SharedPreferences prefs = await _prefs;
+    // luu gia tri String
     String? data = prefs.getString('cartLists');
     if (data == null) return null;
+    // luu string sang list mang
     List<Map<String, dynamic>> maps = jsonDecode(data)
         .cast<Map<String, dynamic>>() as List<Map<String, dynamic>>;
+    // luu tu list mang sang list 
     List<ShoesModel> cartLists =
         maps.map((e) => ShoesModel.fromJson(e)).toList();
     return cartLists;
@@ -67,7 +70,9 @@ class SharedPrefs {
   
   Future<void> saveCart(List<ShoesModel> cartItems) async {
     SharedPreferences prefs = await _prefs;
+    // tu list object sang list mang
     List<Map<String, dynamic>> maps = cartItems.map((e) => e.toJson()).toList();
+    // list mang lưu thanh string
     prefs.setString('cartLists', jsonEncode(maps));
   }
 }
